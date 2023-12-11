@@ -5,9 +5,9 @@ from ..utils import guid, file_creation_time, write_to_server_documents, move_so
 from ...utils import tokenize
 
 # Process all html-related documents.
-def as_html(**kwargs):
-  parent_dir = kwargs.get('directory', 'hotdir')
-  filename = kwargs.get('filename')
+def as_html(directory='hotdir', filename=None, ext='.html', remove_on_complete=False):
+  fullpath = f"{directory}/{filename}{ext}"
+  ...
   ext = kwargs.get('ext', '.html')
   remove = kwargs.get('remove_on_complete', False)
   fullpath = f"{parent_dir}/{filename}{ext}"
