@@ -9,9 +9,9 @@ terraform {
   }
 }
 
-provider "digitalocean" {  
-  # Add your DigitalOcean API token here  
-  token = "DigitalOcean API token"  
+provider "digitalocean" {
+  token = var.do_token
+}
 }  
 
   
