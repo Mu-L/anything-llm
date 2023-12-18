@@ -32,15 +32,15 @@ function extensionEndpoints(app) {
     "/ext/github/repo",
     [validatedRequest, flexUserRoleValid],
     async (request, response) => {
-      try {
-        const responseFromProcessor = await forwardExtensionRequest({
-          endpoint: "/ext/github-repo",
-          method: "POST",
-          body: request.body,
-        });
-        await Telemetry.sendTelemetry("extension_invoked", {
-          type: "github_repo",
-        });
+      const { body } = request;
+      if (!body.repo || !body.accessToken || !body.branch) {
+        return response.status(400).json({ error: 'Invalid input' });
+      }
+      const responseFromProcessor = await forwardExtensionRequest({
+        endpoint: "/ext/github-repo",
+        method: "POST",
+        body: request.body,
+      });
         response.status(200).json(responseFromProcessor);
       } catch (e) {
         console.error(e);
