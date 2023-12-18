@@ -20,28 +20,28 @@ export default function FileRow({
 }) {
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const onTrashClick = async (event) => {
-    event.stopPropagation();
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this document?\nThis will require you to re-upload and re-embed it.\nThis document will be removed from any workspace that is currently referencing it.\nThis action is not reversible."
-      )
-    ) {
-      return false;
-    }
-
-    try {
-      setLoading(true);
-      setLoadingMessage("This may take a while for large documents");
-      await System.deleteDocument(`${folderName}/${item.name}`);
-      await fetchKeys(true);
-    } catch (error) {
-      console.error("Failed to delete the document:", error);
-    }
-
-    if (selected) toggleSelection(item);
-    setLoading(false);
-  };
+  const onTrashClick = useCallback(async (event) => {
+      event.stopPropagation();
+      if (
+        !window.confirm(
+          "Are you sure you want to delete this document?\nThis will require you to re-upload and re-embed it.\nThis document will be removed from any workspace that is currently referencing it.\nThis action is not reversible."
+        )
+      ) {
+        return false;
+      }
+  
+      try {
+        setLoading(true);
+        setLoadingMessage("This may take a while for large documents");
+        await System.deleteDocument(`${folderName}/${item.name}`);
+        await fetchKeys(true);
+      } catch (error) {
+        console.error("Failed to delete the document:", error);
+      }
+  
+      if (selected) toggleSelection(item);
+      setLoading(false);
+    }, [setLoading, setLoadingMessage, fetchKeys]);
 
   const handleShowTooltip = () => {
     setShowTooltip(true);
