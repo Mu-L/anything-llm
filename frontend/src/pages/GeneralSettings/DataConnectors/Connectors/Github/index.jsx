@@ -125,6 +125,7 @@ export default function GithubConnectorSetup() {
                       Url of the GitHub repo you wish to collect.
                     </p>
                   </div>
+                  ```jsx
                   <input
                     type="url"
                     name="repo"
@@ -136,19 +137,18 @@ export default function GithubConnectorSetup() {
                     onBlur={() => setSettings({ ...settings, repo })}
                     spellCheck={false}
                   />
-                </div>
-                <div className="flex flex-col w-60">
-                  <div className="flex flex-col gap-y-1 mb-4">
-                    <label className="text-white text-sm block flex gap-x-2 items-center">
-                      <p className="font-semibold ">Github Access Token</p>{" "}
-                      <p className="text-xs text-zinc-300 font-base!">
-                        <i>optional</i>
-                      </p>
-                    </label>
-                    <p className="text-xs text-zinc-300 flex gap-x-2">
-                      Access Token to prevent rate limiting.
-                    </p>
-                  </div>
+                  <input
+                    type="text"
+                    name="accessToken"
+                    className="bg-zinc-900 text-white placeholder-white placeholder-opacity-60 text-sm rounded-lg focus:border-white block w-full p-2.5"
+                    placeholder="github_pat_1234_abcdefg"
+                    required={false}
+                    autoComplete="off"
+                    spellCheck={false}
+                    onChange={(e) => setAccessToken(e.target.value)}
+                    onBlur={() => setSettings({ ...settings, accessToken })}
+                  />
+                  ```
                   <input
                     type="text"
                     name="accessToken"
