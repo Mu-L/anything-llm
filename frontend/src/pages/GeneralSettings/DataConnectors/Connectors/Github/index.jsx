@@ -18,51 +18,51 @@ export default function GithubConnectorSetup() {
     accessToken: null,
   });
 
+  ```jsx
+  const handleFetchFiles = async (form) => {
+    setLoading(true);
+    showToast(
+      "Fetching all files for repo - this may take a while.",
+      "info",
+      { clear: true, autoClose: false }
+    );
+    const { data, error } = await System.dataConnectors.github.collect({
+      repo: form.get("repo"),
+      accessToken: form.get("accessToken"),
+      branch: form.get("branch"),
+    });
+  
+    if (!!error) {
+      handleError(error);
+      return;
+    }
+  
+    showToast(
+      `${data.files} ${pluralize("file", data.files)} collected from ${
+        data.author
+      }/${data.repo}:${data.branch}. Output folder is ${data.destination}.`,
+      "success",
+      { clear: true }
+    );
+    e.target.reset();
+    setLoading(false);
+  }
+  
+  const handleError = (error) => {
+    showToast(error, "error", { clear: true });
+    setLoading(false);
+  }
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
-
     try {
-      setLoading(true);
-      showToast(
-        "Fetching all files for repo - this may take a while.",
-        "info",
-        { clear: true, autoClose: false }
-      );
-      const { data, error } = await System.dataConnectors.github.collect({
-        repo: form.get("repo"),
-        accessToken: form.get("accessToken"),
-        branch: form.get("branch"),
-      });
-
-      if (!!error) {
-        showToast(error, "error", { clear: true });
-        setLoading(false);
-        return;
-      }
-
-      showToast(
-        `${data.files} ${pluralize("file", data.files)} collected from ${
-          data.author
-        }/${data.repo}:${data.branch}. Output folder is ${data.destination}.`,
-        "success",
-        { clear: true }
-      );
-      e.target.reset();
-      setLoading(false);
-      return;
+      await handleFetchFiles(form);
     } catch (e) {
-      console.error(e);
-      showToast(e.message, "error", { clear: true });
-      setLoading(false);
+      handleError(e);
     }
   };
-
-  return (
-    <div className="w-screen h-screen overflow-hidden bg-sidebar flex">
-      {!isMobile && <Sidebar />}
-      <div
-        style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
+  ```
         className="relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[26px] bg-main-gradient w-full h-full overflow-y-scroll border-4 border-accent"
       >
         {isMobile && <SidebarMobileHeader />}
