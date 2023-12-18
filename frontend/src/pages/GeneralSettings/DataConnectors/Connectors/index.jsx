@@ -1,13 +1,13 @@
-import paths from "@/utils/paths";
-import { lazy } from "react";
-import { useParams } from "react-router-dom";
-const Github = lazy(() => import("./Github"));
+import { useHistory } from 'react-router-dom';
 
-const CONNECTORS = {
-  github: Github,
-};
+// ...
 
-export default function DataConnectorSetup() {
+const history = useHistory();
+
+if (!connector || !CONNECTORS.hasOwnProperty(connector)) {
+  history.push(paths.home());
+  return;
+}
   const { connector } = useParams();
   if (!connector || !CONNECTORS.hasOwnProperty(connector)) {
     window.location = paths.home();
