@@ -19,10 +19,10 @@ export default function FolderRow({
 
   const onTrashClick = async (event) => {
     event.stopPropagation();
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this folder?\nThis will require you to re-upload and re-embed it.\nAny documents in this folder will be removed from any workspace that is currently referencing it.\nThis action is not reversible."
-      )
+    const CONFIRM_DELETE_MESSAGE = "Are you sure you want to delete this folder?\nThis will require you to re-upload and re-embed it.\nAny documents in this folder will be removed from any workspace that is currently referencing it.\nThis action is not reversible.";
+    if (!window.confirm(CONFIRM_DELETE_MESSAGE)) {
+      return false;
+    }
     ) {
       return false;
     }
