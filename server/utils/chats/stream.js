@@ -199,29 +199,29 @@ async function streamEmptyEmbeddingChat({
   return;
 }
 
+function handleGeminiStream(response, stream, responseProps) {
+  // code for handling gemini stream
+}
+
+function handleRegularStream(response, stream, responseProps) {
+  // code for handling regular stream
+}
+
 function handleStreamResponses(response, stream, responseProps) {
   const { uuid = uuidv4(), sources = [] } = responseProps;
 
-  // Gemini likes to return a stream asyncIterator which will
-  // be a totally different object than other models.
   if (stream?.type === "geminiStream") {
-    return new Promise(async (resolve) => {
-      let fullText = "";
-      for await (const chunk of stream.stream) {
-        fullText += chunk.text();
-        writeResponseChunk(response, {
-          uuid,
-          sources: [],
-          type: "textResponseChunk",
-          textResponse: chunk.text(),
-          close: false,
-          error: false,
-        });
-      }
+    return handleGeminiStream(response, stream, responseProps);
+  }
 
-      writeResponseChunk(response, {
-        uuid,
-        sources,
+  // If stream is not a regular OpenAI Stream (like if using native model)
+  // we can just iterate the stream content instead.
+  if (!stream.hasOwnProperty("data")) {
+    return handleRegularStream(response, stream, responseProps);
+  }
+
+  // code for handling other types of streams
+}
         type: "textResponseChunk",
         textResponse: "",
         close: true,
