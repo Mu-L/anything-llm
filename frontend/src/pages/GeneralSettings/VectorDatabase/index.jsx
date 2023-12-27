@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from "react";
-import Sidebar, { SidebarMobileHeader } from "@/components/SettingsSidebar";
-import { isMobile } from "react-device-detect";
-import System from "@/models/system";
-import showToast from "@/utils/toast";
-import ChromaLogo from "@/media/vectordbs/chroma.png";
-import PineconeLogo from "@/media/vectordbs/pinecone.png";
-import LanceDbLogo from "@/media/vectordbs/lancedb.png";
-import WeaviateLogo from "@/media/vectordbs/weaviate.png";
-import QDrantLogo from "@/media/vectordbs/qdrant.png";
-import PreLoader from "@/components/Preloader";
-import VectorDBOption from "@/components/VectorDBOption";
-import ChangeWarningModal from "@/components/ChangeWarning";
+import React, { useState, useEffect, useCallback } from "react";
 
-export default function GeneralVectorDatabase() {
-  const [saving, setSaving] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
-  const [hasEmbeddings, setHasEmbeddings] = useState(false);
-  const [vectorDB, setVectorDB] = useState("lancedb");
-  const [settings, setSettings] = useState({});
-  const [loading, setLoading] = useState(true);
+...
 
-  useEffect(() => {
-    async function fetchKeys() {
-      const _settings = await System.keys();
-      setSettings(_settings);
-      setVectorDB(_settings?.VectorDB || "lancedb");
-      setHasEmbeddings(_settings?.HasExistingEmbeddings || false);
-      setLoading(false);
-    }
-    fetchKeys();
-  }, []);
+const updateVectorChoice = useCallback((selection) => {
+  setHasChanges(true);
+  setVectorDB(selection);
+}, []);
+
+...
+
+const handleSaveSettings = useCallback(async () => {
+  setSaving(true);
+  const data = new FormData(document.getElementById("vectordb-form"));
+  const settingsData = {};
+  for (let [key, value] of data.entries()) {
+    settingsData[key] = value;
+  }
+
+  const { error } = await System.updateSystem(settingsData);
+  if (error) {
+    showToast(`Failed to save vector database settings: ${error}`, "error");
+    setHasChanges(true);
+  } else {
+    showToast("Vector database preferences saved successfully.", "success");
+    setHasChanges(false);
+  }
+  setSaving(false);
+  document.getElementById("confirmation-modal")?.close();
+}, [vectorDB, settings, hasChanges, hasEmbeddings]);
+
+...
 
   const updateVectorChoice = (selection) => {
     setHasChanges(true);
