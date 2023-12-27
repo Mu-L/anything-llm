@@ -22,9 +22,9 @@ function LLMSelection({ nextStep, prevStep, currentStep }) {
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const updateLLMChoice = (selection) => {
+  const updateLLMChoice = useCallback((selection) => {
     setLLMChoice(selection);
-  };
+  }, []);
 
   useEffect(() => {
     async function fetchKeys() {
