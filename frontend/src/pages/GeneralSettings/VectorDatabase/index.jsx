@@ -169,28 +169,28 @@ export default function GeneralVectorDatabase() {
               </div>
               <div className="mt-10 flex flex-wrap gap-4 max-w-[800px]">
                 {vectorDB === "pinecone" && (
-                  <>
-                    <div className="flex flex-col w-60">
-                      <label className="text-white text-sm font-semibold block mb-4">
-                        Pinecone DB API Key
-                      </label>
-                      <input
-                        type="password"
-                        name="PineConeKey"
-                        className="bg-zinc-900 text-white placeholder-white placeholder-opacity-60 text-sm rounded-lg focus:border-white block w-full p-2.5"
-                        placeholder="Pinecone API Key"
-                        defaultValue={
-                          settings?.PineConeKey ? "*".repeat(20) : ""
-                        }
-                        required={true}
-                        autoComplete="off"
-                        spellCheck={false}
-                      />
-                    </div>
-
-                    <div className="flex flex-col w-60">
-                      <label className="text-white text-sm font-semibold block mb-4">
-                        Pinecone Index Environment
+                  const PineconeFields = ({ settings }) => (
+                    <>
+                      <div className="flex flex-col w-60">
+                        <label className="text-white text-sm font-semibold block mb-4">
+                          Pinecone DB API Key
+                        </label>
+                        <input
+                          type="password"
+                          name="PineConeKey"
+                          className="bg-zinc-900 text-white placeholder-white placeholder-opacity-60 text-sm rounded-lg focus:border-white block w-full p-2.5"
+                          placeholder="Pinecone API Key"
+                          defaultValue={
+                            settings?.PineConeKey ? "*".repeat(20) : ""
+                          }
+                          required={true}
+                          autoComplete="off"
+                          spellCheck={false}
+                        />
+                      </div>
+                      ...
+                    </>
+                  );
                       </label>
                       <input
                         type="text"
