@@ -39,8 +39,8 @@ class GeminiLLM {
   }
 
   isValidChatCompletionModel(modelName = "") {
-    const validModels = ["gemini-pro"];
-    return validModels.includes(modelName);
+    const validModels = new Set(["gemini-pro"]);
+    return validModels.has(modelName);
   }
 
   // Moderation cannot be done with Gemini.
