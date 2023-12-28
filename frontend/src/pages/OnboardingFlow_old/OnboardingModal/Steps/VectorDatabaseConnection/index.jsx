@@ -26,11 +26,11 @@ function VectorDatabaseConnection({ nextStep, prevStep, currentStep }) {
     }
   }, [currentStep]);
 
-  const updateVectorChoice = (selection) => {
+  const updateVectorChoice = useCallback((selection) => {
     setVectorDB(selection);
-  };
-
-  const handleSubmit = async (e, formElement) => {
+  }, []);
+  
+  const handleSubmit = useCallback(async (e, formElement) => {
     e.preventDefault();
     const form = formElement || e.target;
     const data = {};
@@ -43,7 +43,7 @@ function VectorDatabaseConnection({ nextStep, prevStep, currentStep }) {
     }
     nextStep("appearance");
     return;
-  };
+  }, []);
 
   if (loading)
     return (
