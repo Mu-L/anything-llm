@@ -15,7 +15,9 @@ import WeaviateLogo from "@/media/vectordbs/weaviate.png";
 import QDrantLogo from "@/media/vectordbs/qdrant.png";
 import PreLoader from "@/components/Preloader";
 
-const LLM_SELECTION_PRIVACY = {
+```jsx
+// constants.js
+export const LLM_SELECTION_PRIVACY = {
   openai: {
     name: "OpenAI",
     description: [
@@ -24,37 +26,35 @@ const LLM_SELECTION_PRIVACY = {
     ],
     logo: OpenAiLogo,
   },
-  azure: {
-    name: "Azure OpenAI",
+  // ... rest of the object
+};
+
+export const VECTOR_DB_PRIVACY = {
+  chroma: {
+    name: "Chroma",
     description: [
-      "Your chats will not be used for training",
-      "Your text and embedding text are not visible to OpenAI or Microsoft",
+      "Your vectors and document text are stored on your Chroma instance",
+      "Access to your instance is managed by you",
     ],
-    logo: AzureOpenAiLogo,
+    logo: ChromaLogo,
   },
-  anthropic: {
-    name: "Anthropic",
+  // ... rest of the object
+};
+
+export const EMBEDDING_ENGINE_PRIVACY = {
+  native: {
+    name: "AnythingLLM Embedder",
     description: [
-      "Your chats will not be used for training",
-      "Your prompts and document text used in responses are visible to Anthropic",
+      "Your document text is embedded privately on this instance of AnythingLLM",
     ],
-    logo: AnthropicLogo,
+    logo: AnythingLLMIcon,
   },
-  gemini: {
-    name: "Google Gemini",
-    description: [
-      "Your chats are de-identified and used in training",
-      "Your prompts and document text are visible in responses to Google",
-    ],
-    logo: GeminiLogo,
-  },
-  lmstudio: {
-    name: "LMStudio",
-    description: [
-      "Your model and chats are only accessible on the server running LMStudio",
-    ],
-    logo: LMStudioLogo,
-  },
+  // ... rest of the object
+};
+
+// DataHandling.jsx
+import { LLM_SELECTION_PRIVACY, VECTOR_DB_PRIVACY, EMBEDDING_ENGINE_PRIVACY } from './constants';
+```
   localai: {
     name: "LocalAI",
     description: [
