@@ -1,75 +1,75 @@
-const { v4 } = require("uuid");
-const { chatPrompt } = require("../../chats");
+const MODEL_GEMINI_PRO = "gemini-pro";
+const ROLE_SYSTEM = "system";
+const ROLE_USER = "user";
+const ROLE_ASSISTANT = "assistant";
+const ROLE_USER_PROMPT = "USER_PROMPT";
+const PARTS = "parts";
+const ROLE_MODEL = "model";
+const ERROR_MESSAGE_INVALID_MODEL = `Gemini chat: ${this.model} is not valid for chat completion!`;
+const ERROR_MESSAGE_NO_RESPONSE = "Gemini: No response could be parsed.";
+const ERROR_MESSAGE_NO_STREAM = "Could not stream response stream from Gemini.";
 
-class GeminiLLM {
-  constructor(embedder = null) {
-    if (!process.env.GEMINI_API_KEY)
-      throw new Error("No Gemini API key was set.");
+this.model = process.env.GEMINI_LLM_MODEL_PREF || MODEL_GEMINI_PRO;
 
-    // Docs: https://ai.google.dev/tutorials/node_quickstart
-    const { GoogleGenerativeAI } = require("@google/generative-ai");
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    this.model = process.env.GEMINI_LLM_MODEL_PREF || "gemini-pro";
-    this.gemini = genAI.getGenerativeModel({ model: this.model });
-    this.limits = {
-      history: this.promptWindowLimit() * 0.15,
-      system: this.promptWindowLimit() * 0.15,
-      user: this.promptWindowLimit() * 0.7,
-    };
+switch (this.model) {
+  case MODEL_GEMINI_PRO:
+    return 30_720;
+  default:
+    return 30_720; // assume a gemini-pro model
+}
 
-    if (!embedder)
-      throw new Error(
-        "INVALID GEMINI LLM SETUP. No embedding engine has been set. Go to instance settings and set up an embedding interface to use Gemini as your LLM."
-      );
-    this.embedder = embedder;
-    this.answerKey = v4().split("-")[0];
-  }
+const validModels = [MODEL_GEMINI_PRO];
 
-  streamingEnabled() {
-    return "streamChat" in this && "streamGetChatCompletion" in this;
-  }
-
-  promptWindowLimit() {
-    switch (this.model) {
-      case "gemini-pro":
-        return 30_720;
-      default:
-        return 30_720; // assume a gemini-pro model
-    }
-  }
-
-  isValidChatCompletionModel(modelName = "") {
-    const validModels = ["gemini-pro"];
-    return validModels.includes(modelName);
-  }
-
-  // Moderation cannot be done with Gemini.
-  // Not implemented so must be stubbed
-  async isSafe(_input = "") {
-    return { safe: true, reasons: [] };
-  }
-
-  constructPrompt({
-    systemPrompt = "",
-    contextTexts = [],
-    chatHistory = [],
-    userPrompt = "",
-  }) {
-    const prompt = {
-      role: "system",
-      content: `${systemPrompt}
+const prompt = {
+  role: ROLE_SYSTEM,
+  content: `${systemPrompt}
 Context:
     ${contextTexts
       .map((text, i) => {
-        return `[CONTEXT ${i}]:\n${text}\n[END CONTEXT ${i}]\n\n`;
+        return `[CONTEXT ${i}]:
+${text}
+[END CONTEXT ${i}]
+
+`;
       })
       .join("")}`,
-    };
-    return [
-      prompt,
-      { role: "assistant", content: "Okay." },
-      ...chatHistory,
-      { role: "USER_PROMPT", content: userPrompt },
+};
+
+return [
+  prompt,
+  { role: ROLE_ASSISTANT, content: "Okay." },
+  ...chatHistory,
+  { role: ROLE_USER_PROMPT, content: userPrompt },
+];
+
+if (message.role === ROLE_SYSTEM)
+  return { role: ROLE_USER, parts: message.content };
+if (message.role === ROLE_USER)
+  return { role: ROLE_USER, parts: message.content };
+if (message.role === ROLE_ASSISTANT)
+  return { role: ROLE_MODEL, parts: message.content };
+
+if (!this.isValidChatCompletionModel(this.model))
+  throw new Error(ERROR_MESSAGE_INVALID_MODEL);
+
+if (!responseText) throw new Error(ERROR_MESSAGE_NO_RESPONSE);
+
+if (!this.isValidChatCompletionModel(this.model))
+  throw new Error(ERROR_MESSAGE_INVALID_MODEL);
+
+if (!responseText) throw new Error(ERROR_MESSAGE_NO_RESPONSE);
+
+if (!this.isValidChatCompletionModel(this.model))
+  throw new Error(ERROR_MESSAGE_INVALID_MODEL);
+
+if (!responseStream.stream)
+  throw new Error(ERROR_MESSAGE_NO_STREAM);
+
+if (!this.isValidChatCompletionModel(this.model))
+  throw new Error(ERROR_MESSAGE_INVALID_MODEL);
+
+if (!responseStream.stream)
+  throw new Error(ERROR_MESSAGE_NO_STREAM);
     ];
   }
 
