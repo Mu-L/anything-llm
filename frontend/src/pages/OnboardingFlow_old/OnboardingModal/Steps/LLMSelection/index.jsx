@@ -1,24 +1,24 @@
-import React, { memo, useEffect, useState } from "react";
-import AnythingLLMIcon from "@/media/logo/anything-llm-icon.png";
-import OpenAiLogo from "@/media/llmprovider/openai.png";
-import AzureOpenAiLogo from "@/media/llmprovider/azure.png";
-import AnthropicLogo from "@/media/llmprovider/anthropic.png";
-import GeminiLogo from "@/media/llmprovider/gemini.png";
-import OllamaLogo from "@/media/llmprovider/ollama.png";
-import LMStudioLogo from "@/media/llmprovider/lmstudio.png";
-import LocalAiLogo from "@/media/llmprovider/localai.png";
-import System from "@/models/system";
-import PreLoader from "@/components/Preloader";
-import LLMProviderOption from "@/components/LLMSelection/LLMProviderOption";
-import OpenAiOptions from "@/components/LLMSelection/OpenAiOptions";
-import AzureAiOptions from "@/components/LLMSelection/AzureAiOptions";
-import AnthropicAiOptions from "@/components/LLMSelection/AnthropicAiOptions";
-import LMStudioOptions from "@/components/LLMSelection/LMStudioOptions";
-import LocalAiOptions from "@/components/LLMSelection/LocalAiOptions";
-import NativeLLMOptions from "@/components/LLMSelection/NativeLLMOptions";
-import GeminiLLMOptions from "@/components/LLMSelection/GeminiLLMOptions";
-import OllamaLLMOptions from "@/components/LLMSelection/OllamaLLMOptions";
+import React, { memo, useEffect, useState, useCallback } from "react";
 
+...
+
+const handleSubmit = useCallback(async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const data = {};
+  const formData = new FormData(form);
+  for (var [key, value] of formData.entries()) data[key] = value;
+  const { error } = await System.updateSystem(data);
+  if (error) {
+    alert(`Failed to save LLM settings: ${error}`, "error");
+    return;
+  }
+  nextStep("embedding_preferences");
+}, []);
+
+...
+
+export default memo(LLMSelection);
 function LLMSelection({ nextStep, prevStep, currentStep }) {
   const [llmChoice, setLLMChoice] = useState("openai");
   const [settings, setSettings] = useState(null);
