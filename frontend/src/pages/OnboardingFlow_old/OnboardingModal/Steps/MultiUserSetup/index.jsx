@@ -92,12 +92,13 @@ function MultiUserSetup({ nextStep, prevStep }) {
             password as only admins can reset passwords.
           </div>
           <div className="flex gap-2">
+            ```jsx
             <button
               onClick={prevStep}
               type="button"
               className="px-4 py-2 rounded-lg text-white hover:bg-sidebar"
             >
-              Back
+              {BUTTON_TEXT.BACK}
             </button>
             <button
               type="submit"
@@ -106,10 +107,9 @@ function MultiUserSetup({ nextStep, prevStep }) {
               disabled:border-gray-400 disabled:text-slate-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
               disabled={!(!!username && !!password)}
             >
-              Continue
+              {BUTTON_TEXT.CONTINUE}
             </button>
-          </div>
-        </div>
+            ```
       </form>
     </div>
   );
