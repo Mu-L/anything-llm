@@ -1,11 +1,9 @@
-import React, { memo, useState } from "react";
-import System from "@/models/system";
-import { AUTH_TIMESTAMP, AUTH_TOKEN, AUTH_USER } from "@/utils/constants";
-import debounce from "lodash.debounce";
+import React, { memo, useState, useCallback } from "react";
 
 function PasswordProtection({ nextStep, prevStep }) {
   const [password, setPassword] = useState("");
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
@@ -19,8 +17,6 @@ function PasswordProtection({ nextStep, prevStep }) {
       return;
     }
 
-    // Auto-request token with password that was just set so they
-    // are not redirected to login after completion.
     const { token } = await System.requestToken({
       password: formData.get("password"),
     });
@@ -30,17 +26,21 @@ function PasswordProtection({ nextStep, prevStep }) {
 
     nextStep("data_handling");
     return;
-  };
+  }, []);
 
-  const handleSkip = () => {
+  const handleSkip = useCallback(() => {
     nextStep("data_handling");
-  };
+  }, []);
 
   const setNewPassword = (e) => setPassword(e.target.value);
   const handlePasswordChange = debounce(setNewPassword, 500);
+
   return (
-    <div className="w-full">
-      <form className="flex flex-col w-full" onSubmit={handleSubmit}>
+    // rest of the code
+  );
+}
+
+export default memo(PasswordProtection);
         <div className="flex flex-col w-full px-1 md:px-8 py-4">
           <div className="w-full flex flex-col gap-y-2 my-5">
             <div className="w-80">
