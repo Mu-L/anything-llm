@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import Sidebar, { SidebarMobileHeader } from "@/components/SettingsSidebar";
-import { isMobile } from "react-device-detect";
-import System from "@/models/system";
-import showToast from "@/utils/toast";
-import ChromaLogo from "@/media/vectordbs/chroma.png";
-import PineconeLogo from "@/media/vectordbs/pinecone.png";
-import LanceDbLogo from "@/media/vectordbs/lancedb.png";
-import WeaviateLogo from "@/media/vectordbs/weaviate.png";
-import QDrantLogo from "@/media/vectordbs/qdrant.png";
-import PreLoader from "@/components/Preloader";
-import VectorDBOption from "@/components/VectorDBOption";
-import ChangeWarningModal from "@/components/ChangeWarning";
+import React, { useState, useEffect, useCallback } from "react";
+
+// ... rest of the imports
 
 export default function GeneralVectorDatabase() {
-  const [saving, setSaving] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
-  const [hasEmbeddings, setHasEmbeddings] = useState(false);
+  // ... rest of the useState hooks
+
+  const updateVectorChoice = useCallback((selection) => {
+    setHasChanges(true);
+    setVectorDB(selection);
+  }, []);
+
+  const handleSaveSettings = useCallback(async () => {
+    // existing code
+  }, [vectorDB, settings, hasChanges, hasEmbeddings]);
+
+  // ... rest of the code
+}
   const [vectorDB, setVectorDB] = useState("lancedb");
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
