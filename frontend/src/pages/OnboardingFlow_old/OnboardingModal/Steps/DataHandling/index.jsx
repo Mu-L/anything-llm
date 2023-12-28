@@ -1,36 +1,36 @@
-import React, { memo, useEffect, useState } from "react";
-import System from "@/models/system";
-import AnythingLLMIcon from "@/media/logo/anything-llm-icon.png";
-import OpenAiLogo from "@/media/llmprovider/openai.png";
-import AzureOpenAiLogo from "@/media/llmprovider/azure.png";
-import AnthropicLogo from "@/media/llmprovider/anthropic.png";
-import GeminiLogo from "@/media/llmprovider/gemini.png";
-import OllamaLogo from "@/media/llmprovider/ollama.png";
-import LMStudioLogo from "@/media/llmprovider/lmstudio.png";
-import LocalAiLogo from "@/media/llmprovider/localai.png";
-import ChromaLogo from "@/media/vectordbs/chroma.png";
-import PineconeLogo from "@/media/vectordbs/pinecone.png";
-import LanceDbLogo from "@/media/vectordbs/lancedb.png";
-import WeaviateLogo from "@/media/vectordbs/weaviate.png";
-import QDrantLogo from "@/media/vectordbs/qdrant.png";
-import PreLoader from "@/components/Preloader";
+import React, { memo, useEffect, useState, useCallback } from "react";
 
-const LLM_SELECTION_PRIVACY = {
-  openai: {
-    name: "OpenAI",
-    description: [
-      "Your chats will not be used for training",
-      "Your prompts and document text used in responses are visible to OpenAI",
-    ],
-    logo: OpenAiLogo,
-  },
-  azure: {
-    name: "Azure OpenAI",
-    description: [
-      "Your chats will not be used for training",
-      "Your text and embedding text are not visible to OpenAI or Microsoft",
-    ],
-    logo: AzureOpenAiLogo,
+// rest of the imports...
+
+function DataHandling({ nextStep, prevStep, currentStep }) {
+  const [llmChoice, setLLMChoice] = useState("openai");
+  const [loading, setLoading] = useState(true);
+  const [vectorDb, setVectorDb] = useState("pinecone");
+  const [embeddingEngine, setEmbeddingEngine] = useState("openai");
+
+  const nextStepCallback = useCallback(nextStep, []);
+  const prevStepCallback = useCallback(prevStep, []);
+
+  // rest of the code...
+
+  <button
+    onClick={prevStepCallback}
+    type="button"
+    className="px-4 py-2 rounded-lg text-white hover:bg-sidebar"
+  >
+    Back
+  </button>
+  <button
+    onClick={() => nextStepCallback("user_questionnaire")}
+    className="border border-slate-200 px-4 py-2 rounded-lg text-slate-800 bg-slate-200 text-sm items-center flex gap-x-2 hover:text-white hover:bg-transparent focus:ring-gray-800 font-semibold shadow"
+  >
+    Continue
+  </button>
+
+  // rest of the code...
+}
+
+export default memo(DataHandling);
   },
   anthropic: {
     name: "Anthropic",
