@@ -38,7 +38,7 @@ function VectorDatabaseConnection({ nextStep, prevStep, currentStep }) {
     for (var [key, value] of formData.entries()) data[key] = value;
     const { error } = await System.updateSystem(data);
     if (error) {
-      alert(`Failed to save settings: ${error}`, "error");
+      displayError(`Failed to save settings: ${error}`);
       return;
     }
     nextStep("appearance");
