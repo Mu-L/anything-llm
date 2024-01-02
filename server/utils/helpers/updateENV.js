@@ -293,11 +293,11 @@ function validAzureURL(input = "") {
 function validOpenAiTokenLimit(input = "") {
   const tokenLimit = Number(input);
   if (isNaN(tokenLimit)) return "Token limit is not a number";
-  if (![4_096, 16_384, 8_192, 32_768, 128_000].includes(tokenLimit))
+  const validTokenLimits = new Set([4_096, 16_384, 8_192, 32_768, 128_000]);
+  if (!validTokenLimits.has(tokenLimit))
     return "Invalid OpenAI token limit.";
   return null;
 }
-
 function requiresForceMode(_, forceModeEnabled = false) {
   return forceModeEnabled === true ? null : "Cannot set this setting.";
 }
