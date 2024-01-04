@@ -1,7 +1,7 @@
-const { AzureOpenAiEmbedder } = require("../../EmbeddingEngines/azureOpenAi");
-const { chatPrompt } = require("../../chats");
+const MODEL_ERROR_MESSAGE = "No OPEN_MODEL_PREF ENV defined. This must the name of a deployment on your Azure account for an LLM chat model like GPT-3.5.";
 
-class AzureOpenAiLLM {
+if (!this.model)
+  throw new Error(MODEL_ERROR_MESSAGE);
   constructor(embedder = null) {
     const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
     if (!process.env.AZURE_OPENAI_ENDPOINT)
