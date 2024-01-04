@@ -295,12 +295,12 @@ function handleStreamResponses(response, stream, responseProps) {
   return new Promise((resolve) => {
     let fullText = "";
     let chunk = "";
-    stream.data.on("data", (data) => {
-      const lines = data
-        ?.toString()
-        ?.split("\n")
-        .filter((line) => line.trim() !== "");
-
+    const splitLines = data?.toString()?.split("\n").filter((line) => line.trim() !== "");
+    for (const line of splitLines) {
+      let validJSON = false;
+      const message = chunk + line.replace(/^data: /, "");
+      // rest of the code...
+    }
       for (const line of lines) {
         let validJSON = false;
         const message = chunk + line.replace(/^data: /, "");
