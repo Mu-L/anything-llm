@@ -103,12 +103,12 @@ class AzureOpenAiLLM {
           throw new Error("AzureOpenAI chat: No results length!");
         return res.choices[0].message.content;
       })
+      ```javascript
       .catch((error) => {
-        console.log(error);
-        throw new Error(
-          `AzureOpenAI::getChatCompletions failed with: ${error.message}`
-        );
+        console.error(`AzureOpenAI::getChatCompletions failed with: ${error.message}`, error.stack);
+        throw new Error(`AzureOpenAI::getChatCompletions failed with: ${error.message}`);
       });
+      ```
     return textResponse;
   }
 
