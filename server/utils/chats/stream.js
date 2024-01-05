@@ -203,17 +203,15 @@ async function streamEmptyEmbeddingChat({
 function handleStreamResponses(response, stream, responseProps) {
   const { uuid = uuidv4(), sources = [] } = responseProps;
 
-  // Gemini likes to return a stream asyncIterator which will
-  // be a totally different object than other models.
-  if (stream?.type === "geminiStream") {
+  if (stream?.type === 'geminiStream') {
     return new Promise(async (resolve) => {
-      let fullText = "";
+      let chunks = [];
       for await (const chunk of stream.stream) {
-        fullText += chunk.text();
+        chunks.push(chunk.text());
         writeResponseChunk(response, {
           uuid,
           sources: [],
-          type: "textResponseChunk",
+          type: 'textResponseChunk',
           textResponse: chunk.text(),
           close: false,
           error: false,
@@ -223,15 +221,17 @@ function handleStreamResponses(response, stream, responseProps) {
       writeResponseChunk(response, {
         uuid,
         sources,
-        type: "textResponseChunk",
-        textResponse: "",
+        type: 'textResponseChunk',
+        textResponse: '',
         close: true,
         error: false,
       });
-      resolve(fullText);
+      resolve(chunks.join(''));
     });
   }
 
+  // Rest of the function...
+}
   if (stream?.type === "azureStream") {
     return new Promise(async (resolve) => {
       let fullText = "";
