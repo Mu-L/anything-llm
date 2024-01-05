@@ -35,7 +35,7 @@ export default function DefaultChatContainer() {
       setFetchedMessages(fetchedMessages);
     };
     fetchData();
-  }, []);
+  import MESSAGES from './Messages';
 
   const MESSAGES = [
     <React.Fragment>
